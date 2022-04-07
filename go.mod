@@ -1,4 +1,4 @@
-module github.com/dimeshio/fakemesh
+module github.com/dcmeshio/fakemesh
 
 go 1.16
 

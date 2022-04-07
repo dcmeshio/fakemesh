@@ -2,7 +2,7 @@ package fakes
 
 import (
 	"errors"
-	"github.com/dimeshio/fakemesh"
+	"github.com/dcmeshio/fakemesh"
 	"strings"
 )
 

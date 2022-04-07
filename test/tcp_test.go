@@ -2,9 +2,9 @@ package test
 
 import (
 	"fmt"
-	"github.com/dimeshio/fakemesh"
-	"github.com/dimeshio/fakemesh/fakec"
-	"github.com/dimeshio/fakemesh/fakes"
+	"github.com/dcmeshio/fakemesh"
+	"github.com/dcmeshio/fakemesh/fakec"
+	"github.com/dcmeshio/fakemesh/fakes"
 	"net"
 	"testing"
 )

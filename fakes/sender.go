@@ -2,8 +2,8 @@ package fakes
 
 import (
 	"fmt"
-	"github.com/dimeshio/fakemesh"
-	"github.com/dimeshio/fakemesh/common"
+	"github.com/dcmeshio/fakemesh"
+	"github.com/dcmeshio/fakemesh/common"
 	"io"
 	"net/http"
 	"time"

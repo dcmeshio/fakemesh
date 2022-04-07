@@ -2,7 +2,7 @@ package fakec
 
 import (
 	"errors"
-	"github.com/dimeshio/fakemesh"
+	"github.com/dcmeshio/fakemesh"
 	"strings"
 )
 
