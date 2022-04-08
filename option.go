@@ -35,7 +35,7 @@ func GetOption() *Option {
 	return option
 }
 
-func (o *Option) CreateOption(codeType int, key string) *Option {
+func CreateOption(codeType int, key string) *Option {
 	return &Option{
 		Type: codeType,
 		Key:  key,
