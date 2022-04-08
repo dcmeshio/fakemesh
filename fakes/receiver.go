@@ -8,10 +8,8 @@ import (
 
 /*
  * Return
- * int usercode			用户唯一
- * int quotecode		套餐唯一 (kecote 不用)
  * []byte forerunner   	到出错时已读的字节内容
- * error err			是否出错，如果出错，错误内容
+ * error err
  */
 func Receive(bc *fakemesh.BufferConn) (int, int, []byte, error) {
 	option := fakemesh.GetOption()
@@ -31,9 +29,9 @@ type checker struct {
 	bc         *fakemesh.BufferConn
 	headers    map[string]*fakemesh.Header // 待校验的 header
 	forerunner []byte                      // 已读的字节数据
-	usercode   int                         // 用户编号
-	quotecode  int                         // 套餐编号
-	checked    bool                        // 是否完成口令校验
+	usercode   int
+	quotecode  int
+	checked    bool // 是否完成口令校验
 }
 
 func (c *checker) check() (int, int, []byte, error) {

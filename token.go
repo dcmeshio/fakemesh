@@ -9,9 +9,9 @@ import (
 )
 
 type Token struct {
-	Uc int   `json:"uc"` // usercode
-	Qc int   `json:"qc"` // quotecode
-	Ts int64 `json:"ts"` // timestamp 客户端时间戳
+	Uc int   `json:"uc"`
+	Qc int   `json:"qc"`
+	Ts int64 `json:"ts"`
 }
 
 func CreateToken(uc, qc int, td int64) (string, error) {
