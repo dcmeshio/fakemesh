@@ -1,5 +1,7 @@
 package fakemesh
 
+import "sync"
+
 var option *Option
 
 type FirstLine struct {
@@ -16,12 +18,13 @@ type Header struct {
 
 // 根据 option 创建和检验
 type Option struct {
-	Lines           []*FirstLine // 请求首行
-	RequestHeaders  []*Header    // 请求头
-	ResponseHeaders []*Header    // 应答头
-	Type                int    // 区分项目
-	TimestampDifference int64  // 客户端与服务器的时差
-	Key                 string // AES 秘钥，16位、32位
+	mu                  sync.Mutex
+	Lines               []*FirstLine // 请求首行
+	RequestHeaders      []*Header    // 请求头
+	ResponseHeaders     []*Header    // 应答头
+	TimestampDifference int64        // 客户端与服务器的时差
+	Type                int          // 区分项目
+	Key                 string       // AES 秘钥，16位、32位
 }
 
 func SetOption(opt *Option) {
@@ -30,6 +33,31 @@ func SetOption(opt *Option) {
 
 func GetOption() *Option {
 	return option
+}
+
+func (o *Option) CreateOption(codeType int, key string) *Option {
+	return &Option{
+		Type: codeType,
+		Key:  key,
+	}
+}
+
+func (o *Option) AddRequestHeader(header *Header) {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	o.RequestHeaders = append(o.RequestHeaders, header)
+}
+
+func (o *Option) AddResponseHeader(header *Header) {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	o.ResponseHeaders = append(o.ResponseHeaders, header)
+}
+
+func (o *Option) SetTimestampDifference(td int64) {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	o.TimestampDifference = td
 }
 
 func In(str string, strs []string) bool {
