@@ -37,9 +37,19 @@ func GetOption() *Option {
 
 func CreateOption(codeType int, key string) *Option {
 	return &Option{
-		Type: codeType,
-		Key:  key,
+		Lines:               make([]*FirstLine, 0),
+		RequestHeaders:      make([]*Header, 0),
+		ResponseHeaders:     make([]*Header, 0),
+		TimestampDifference: 0,
+		Type:                codeType,
+		Key:                 key,
 	}
+}
+
+func (o *Option) AddFirstLine(line *FirstLine) {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	o.Lines = append(o.Lines, line)
 }
 
 func (o *Option) AddRequestHeader(header *Header) {
