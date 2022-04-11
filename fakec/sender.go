@@ -10,16 +10,11 @@ import (
 // 外部获取 Writer、Host、CreateTokenParam
 func Send(writer io.Writer, host string, uc, qc int) error {
 	bytes, err := CreateRequest(host, uc, qc)
-	println(fmt.Sprintf("%d", bytes))
-	println(fmt.Sprintf("%s", string(bytes)))
 	if err != nil {
-		n, err := writer.Write(bytes)
+		_, err := writer.Write(bytes)
 		if err != nil {
 			return err
 		}
-		println(fmt.Sprintf("Send write: %d", n))
-		println(fmt.Sprintf("Send write: %d", bytes[:n]))
-		println(fmt.Sprintf("Send write: %s", string(bytes[:n])))
 	}
 	return err
 }
