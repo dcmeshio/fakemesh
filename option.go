@@ -158,7 +158,7 @@ func defaultOption() *Option {
 		ResponseHeaders:     ResponseHeaders,
 		Type:                1,
 		TimestampDifference: 0,
-		Key:                 "abcdabcdabcdabcd",
+		Key:                 "where1is23macwin",
 	}
 
 }
