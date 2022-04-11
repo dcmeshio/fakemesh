@@ -13,7 +13,13 @@ func Send(writer io.Writer, host string, uc, qc int) error {
 	println(fmt.Sprintf("%d", bytes))
 	println(fmt.Sprintf("%s", string(bytes)))
 	if err != nil {
-		_, err = writer.Write(bytes)
+		n, err := writer.Write(bytes)
+		if err != nil {
+			return err
+		}
+		println(fmt.Sprintf("Send write: %d", n))
+		println(fmt.Sprintf("Send write: %d", bytes[:n]))
+		println(fmt.Sprintf("Send write: %s", string(bytes[:n])))
 	}
 	return err
 }
