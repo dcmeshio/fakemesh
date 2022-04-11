@@ -9,6 +9,14 @@ import (
 
 // 外部获取 Writer、Host、CreateTokenParam
 func Send(writer io.Writer, host string, uc, qc int) error {
+	bytes, err := CreateRequest(host, uc, qc)
+	if err != nil {
+		_, err = writer.Write(bytes)
+	}
+	return err
+}
+
+func CreateRequest(host string, uc, qc int) ([]byte, error) {
 	option := fakemesh.GetOption()
 	builder := CreateBuilder()
 	// 首行
@@ -23,7 +31,7 @@ func Send(writer io.Writer, host string, uc, qc int) error {
 	// 请求头 Token
 	tv, err := fakemesh.CreateToken(uc, qc, option.TimestampDifference)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	th := ""
 	if option.Type == 0 {
@@ -45,7 +53,5 @@ func Send(writer io.Writer, host string, uc, qc int) error {
 		builder.AddHeader(Header)
 	}
 
-	bytes := builder.Build()
-	_, err = writer.Write(bytes)
-	return err
+	return builder.Build(), nil
 }
