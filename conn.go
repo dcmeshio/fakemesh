@@ -2,7 +2,6 @@ package fakemesh
 
 import (
 	"bufio"
-	"fmt"
 	"net"
 	"time"
 )
@@ -28,9 +27,6 @@ func (bc *BufferConn) Read(b []byte) (n int, err error) {
 }
 
 func (bc *BufferConn) Write(b []byte) (n int, err error) {
-	println(fmt.Sprintf("BR Write: %d", len(b)))
-	println(fmt.Sprintf("BR Write: %d", b))
-	println(fmt.Sprintf("BR Write: %s", string(b)))
 	return bc.conn.Write(b)
 }
 
