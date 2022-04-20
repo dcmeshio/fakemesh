@@ -51,7 +51,7 @@ func CheckToken(t string) (int, int, error) {
 	}
 	when := dt.Ts
 	now := time.Now().Unix()
-	if now-when > 60 || now-when < 0 {
+	if now-when > 30 || now-when < -10 {
 		return 0, 0, errors.New("check token timestamp error")
 	}
 	return dt.Uc, dt.Qc, nil
