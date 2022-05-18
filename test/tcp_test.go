@@ -1,6 +1,7 @@
 package test
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/dcmeshio/fakemesh"
 	"github.com/dcmeshio/fakemesh/fakec"
@@ -8,6 +9,69 @@ import (
 	"net"
 	"testing"
 )
+
+func TestTlsTest(t *testing.T) {
+	// 远程
+	conf := &tls.Config{
+		InsecureSkipVerify: true,
+		MaxVersion:         tls.VersionTLS13,
+		MinVersion:         tls.VersionTLS13,
+	}
+	remote, err := tls.Dial("tcp", "api.checkpay.ca:443", conf)
+	if err != nil {
+		println(err)
+		return
+	}
+	println(remote.RemoteAddr().String())
+}
+
+func TestShowServer(t *testing.T) {
+
+	listen("0.0.0.0:5555", nil, func(conn net.Conn) {
+		// 远程
+		conf := &tls.Config{
+			InsecureSkipVerify: true,
+			MaxVersion:         tls.VersionTLS11,
+			MinVersion:         tls.VersionTLS11,
+		}
+		remote, err := tls.Dial("tcp", "api.checkpay.ca:443", conf)
+		if err != nil {
+			println(err)
+			return
+		}
+
+		println(remote.RemoteAddr().String())
+
+		go func() {
+			bytes := make([]byte, 2048)
+			for true {
+				n, e := remote.Read(bytes)
+				if e != nil {
+					println(e)
+					return
+				}
+				s := string(bytes[:n])
+				println(fmt.Sprintf("[% x]", bytes[:n]))
+				println(fmt.Sprintf("%s", s))
+				_, _ = conn.Write(bytes[:n])
+			}
+		}()
+
+		bytes := make([]byte, 2048)
+		for true {
+			n, e := conn.Read(bytes)
+			if e != nil {
+				println(e)
+				return
+			}
+			s := string(bytes[:n])
+			println(fmt.Sprintf("[% x]", bytes[:n]))
+			println(fmt.Sprintf("%s", s))
+			_, _ = remote.Write(bytes[:n])
+		}
+	})
+
+}
 
 func TestTcpServer(t *testing.T) {
 
@@ -53,6 +117,7 @@ func TestTcpServer(t *testing.T) {
 
 func TestTcpClient(t *testing.T) {
 	conn, err := net.Dial("tcp", "127.0.0.1:5555")
+
 	if err != nil {
 		println(fmt.Sprintf("%s", err))
 		return
@@ -73,7 +138,6 @@ func TestTcpClient(t *testing.T) {
 	}
 
 	println(fmt.Sprintf("Link successful."))
-
 	_, err = bc.Write([]byte("Client handshake"))
 
 	buf := make([]byte, 1024)
